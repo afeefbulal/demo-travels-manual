@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Demo Travels App — User Manual</title>
+<meta name="description" content="Step-by-step user manual for the Demo Travels App: clients, bookings, bills, payments, packages, reports, accounts and more." />
+<meta name="theme-color" content="#1565d8" />
+<link rel="icon" type="image/webp" href="favicon.webp" />
+<meta property="og:title" content="Demo Travels App — User Manual" />
+<meta property="og:description" content="Everything you need to run bookings, billing and client dues in the Demo Travels App." />
+<meta property="og:image" content="images/dashboard.webp" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --primary: #1565d8;
+  --primary-rgb: 21, 101, 216;
+  --primary-dark: #0e4aa8;
+  --navy: #0e3a8a;
+  --accent: #f7931e;
+  --accent-soft: #fff4e6;
+  --success: #16a34a;
+  --success-soft: #e8f7ee;
+  --danger: #dc2626;
+  --danger-soft: #fdecec;
+  --bg: #f5f8fc;
+  --surface: #ffffff;
+  --surface-2: #eef3fa;
+  --text: #0f1b33;
+  --text-2: #334155;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --shadow: 0 1px 2px rgba(15, 27, 51, .05), 0 8px 24px rgba(15, 27, 51, .07);
+  --shadow-lg: 0 20px 50px rgba(15, 27, 51, .16);
+  --radius: 18px;
+  --header-h: 64px;
+  --sidebar-w: 280px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1220; --surface: #111a2c; --surface-2: #17223a; --text: #e6edf8; --text-2: #c3cede;
+    --muted: #8fa0b8; --border: #22304a; --accent-soft: #2a1f10; --success-soft: #0f2a1b; --danger-soft: #2c1414;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); --navy: #9cc0ff;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1220; --surface: #111a2c; --surface-2: #17223a; --text: #e6edf8; --text-2: #c3cede;
+  --muted: #8fa0b8; --border: #22304a; --accent-soft: #2a1f10; --success-soft: #0f2a1b; --danger-soft: #2c1414;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); --navy: #9cc0ff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.65; font-size: 16px;
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+/* Reserve each screenshot's exact shape so lazy loading never shifts the page
+   (which would make contents links land short of their section). */
+.frame img, .hero-art > img { width: 100%; height: auto; aspect-ratio: 1600 / 960; }
+.paper img { width: 100%; height: auto; aspect-ratio: 1230 / 1254; }
+.phone img { width: 100%; height: auto; aspect-ratio: 780 / 1688; }
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+:focus-visible { outline: 3px solid rgba(var(--primary-rgb), .45); outline-offset: 2px; border-radius: 6px; }
+
+/* Progress bar */
+.progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 100;
+  background: linear-gradient(90deg, var(--primary), var(--accent)); }
+
+/* Header */
+.topbar {
+  position: sticky; top: 0; z-index: 50; height: var(--header-h);
+  display: flex; align-items: center; gap: 14px; padding: 0 20px;
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 800; }
+.brand:hover { text-decoration: none; }
+.brand img { width: 36px; height: 36px; background: #fff; border-radius: 10px; padding: 3px; border: 1px solid var(--border); }
+.brand small { display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .12em; color: var(--accent); text-transform: uppercase; line-height: 1; }
+.brand span { line-height: 1.15; }
+.topbar .spacer { flex: 1; }
+.icon-btn {
+  width: 40px; height: 40px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 17px;
+}
+.icon-btn:hover { border-color: var(--primary); }
+.menu-toggle { display: none; }
+.top-cta {
+  display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border-radius: 12px; font-weight: 700; font-size: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; box-shadow: 0 6px 16px rgba(var(--primary-rgb), .3);
+}
+.top-cta:hover { text-decoration: none; filter: brightness(1.06); }
+
+/* Layout */
+.layout { display: grid; grid-template-columns: var(--sidebar-w) minmax(0, 1fr); max-width: 1320px; margin: 0 auto; }
+.sidebar {
+  position: sticky; top: var(--header-h); height: calc(100vh - var(--header-h)); overflow-y: auto;
+  padding: 22px 14px 40px 20px; border-right: 1px solid var(--border);
+}
+.search { position: relative; margin-bottom: 16px; }
+.search input {
+  width: 100%; padding: 11px 12px 11px 38px; border-radius: 12px; border: 1.5px solid var(--border);
+  background: var(--surface); color: var(--text); font: inherit; font-size: 14px;
+}
+.search input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(var(--primary-rgb), .18); }
+.search::before { content: '🔍'; position: absolute; left: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; opacity: .6; }
+.toc-group { font-size: 10.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 18px 10px 6px; }
+.toc a {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px;
+  color: var(--text-2); font-size: 14px; font-weight: 600; text-decoration: none; transition: background .15s, color .15s;
+}
+.toc a .e { width: 22px; text-align: center; }
+.toc a:hover { background: rgba(var(--primary-rgb), .08); color: var(--primary); }
+.toc a.active { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; box-shadow: 0 6px 14px rgba(var(--primary-rgb), .28); }
+.toc a.hidden { display: none; }
+.no-results { display: none; font-size: 13px; color: var(--muted); padding: 8px 10px; }
+
+main { padding: 0 40px 80px; min-width: 0; }
+
+/* Hero */
+.hero {
+  position: relative; overflow: hidden; margin: 28px 0 8px; border-radius: 28px; color: #fff;
+  padding: 56px 48px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 32px; align-items: center;
+  background:
+    radial-gradient(circle at 90% 5%, rgba(255,255,255,.2), transparent 40%),
+    radial-gradient(circle at 5% 100%, rgba(59,140,240,.7), transparent 45%),
+    linear-gradient(145deg, #0e3a8a 0%, #1565d8 60%, #2b87f0 100%);
+  box-shadow: 0 24px 60px rgba(var(--primary-rgb), .3);
+}
+.hero::after {
+  content: ''; position: absolute; width: 900px; height: 900px; right: -460px; bottom: -600px; border-radius: 50%;
+  border: 2px dashed rgba(255,255,255,.2); pointer-events: none;
+}
+.hero .kicker {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); padding: 6px 12px; border-radius: 999px;
+}
+.hero h1 { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.08; letter-spacing: -.03em; font-weight: 800; margin: 18px 0 14px; }
+.hero h1 span { color: #ffc27a; }
+.hero p { font-size: 17px; opacity: .92; max-width: 540px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; position: relative; z-index: 1; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 20px; border-radius: 14px; font-weight: 700; font-size: 15px; }
+.btn:hover { text-decoration: none; transform: translateY(-1px); }
+.btn-light { background: #fff; color: var(--primary-dark); box-shadow: 0 8px 20px rgba(0,0,0,.15); }
+.btn-ghost { background: rgba(255,255,255,.14); color: #fff; border: 1px solid rgba(255,255,255,.3); }
+.hero-art { position: relative; z-index: 1; }
+.hero-art img { border-radius: 16px; box-shadow: 0 30px 60px rgba(0,0,0,.35); border: 1px solid rgba(255,255,255,.3); }
+.hero-art .badge-float {
+  position: absolute; left: -18px; bottom: -18px; background: #fff; color: var(--text); border-radius: 16px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow-lg); font-weight: 700; font-size: 14px;
+}
+.hero-art .badge-float img { width: 34px; height: 34px; box-shadow: none; border: 0; border-radius: 0; }
+
+/* Sections */
+section.doc { padding-top: 56px; }
+.sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.sec-icon {
+  width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;
+  background: rgba(var(--primary-rgb), .1); border: 1px solid rgba(var(--primary-rgb), .15);
+}
+.sec-num { font-size: 12px; font-weight: 800; color: var(--accent); letter-spacing: .1em; text-transform: uppercase; }
+h2 { font-size: clamp(24px, 2.6vw, 32px); letter-spacing: -.02em; line-height: 1.2; font-weight: 800; }
+h3 { font-size: 19px; font-weight: 800; letter-spacing: -.01em; margin: 30px 0 10px; }
+.lead { font-size: 17px; color: var(--text-2); max-width: 760px; margin-bottom: 18px; }
+p + p { margin-top: 10px; }
+.who { display: inline-flex; gap: 6px; margin: 6px 0 16px; flex-wrap: wrap; }
+.pill { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border); }
+.pill.admin { background: var(--accent-soft); color: #b45309; border-color: rgba(247,147,30,.35); }
+.pill.all { background: var(--success-soft); color: var(--success); border-color: rgba(22,163,74,.3); }
+
+/* Steps */
+ol.steps { list-style: none; counter-reset: s; margin: 14px 0 20px; display: grid; gap: 10px; }
+ol.steps > li {
+  counter-increment: s; position: relative; padding: 14px 16px 14px 60px; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; box-shadow: var(--shadow);
+}
+ol.steps > li::before {
+  content: counter(s); position: absolute; left: 14px; top: 12px; width: 32px; height: 32px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; color: #fff;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+}
+ol.steps b, .ui { font-weight: 700; }
+.ui {
+  display: inline-block; padding: 1px 8px; border-radius: 7px; font-size: .9em; background: rgba(var(--primary-rgb), .1);
+  color: var(--primary-dark); border: 1px solid rgba(var(--primary-rgb), .18); white-space: nowrap;
+}
+:root[data-theme="dark"] .ui { color: #9cc0ff; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .ui { color: #9cc0ff; } }
+ul.ticks { list-style: none; display: grid; gap: 8px; margin: 12px 0 18px; }
+ul.ticks li { padding-left: 30px; position: relative; color: var(--text-2); }
+ul.ticks li::before {
+  content: '✓'; position: absolute; left: 0; top: 2px; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--success-soft); color: var(--success); font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center;
+}
+
+/* Figures */
+figure.shot { margin: 18px 0 26px; }
+.frame {
+  border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow-lg);
+  cursor: zoom-in; transition: transform .2s ease;
+}
+.frame:hover { transform: translateY(-2px); }
+.frame .bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: var(--surface-2); border-bottom: 1px solid var(--border); }
+.frame .bar i { width: 10px; height: 10px; border-radius: 50%; background: #f87171; }
+.frame .bar i:nth-child(2) { background: #fbbf24; }
+.frame .bar i:nth-child(3) { background: #34d399; }
+.frame .bar span { margin-left: 10px; font-size: 12px; color: var(--muted); background: var(--surface); border: 1px solid var(--border); padding: 3px 12px; border-radius: 999px; }
+figcaption { font-size: 13.5px; color: var(--muted); margin-top: 10px; text-align: center; }
+.phones { display: flex; gap: 22px; justify-content: center; flex-wrap: wrap; margin: 18px 0 26px; }
+.phone { width: 240px; border-radius: 34px; padding: 10px; background: #0f1b33; box-shadow: var(--shadow-lg); cursor: zoom-in; }
+.phone img { border-radius: 26px; }
+.paper { max-width: 560px; margin: 18px auto 10px; border-radius: 6px; overflow: hidden; box-shadow: 0 30px 60px rgba(15,27,51,.2); border: 1px solid var(--border); cursor: zoom-in; background: #fff; }
+
+/* Callouts */
+.callout { display: flex; gap: 12px; padding: 14px 16px; border-radius: 14px; margin: 16px 0; border: 1px solid; font-size: 15px; }
+.callout .ci { font-size: 20px; line-height: 1.3; }
+.callout b { display: block; margin-bottom: 2px; }
+.tip { background: rgba(var(--primary-rgb), .07); border-color: rgba(var(--primary-rgb), .25); }
+.note { background: var(--accent-soft); border-color: rgba(247,147,30,.35); }
+.warn { background: var(--danger-soft); border-color: rgba(220,38,38,.3); }
+
+/* Cards */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 18px 0; }
+.card {
+  display: block; padding: 18px; border-radius: 16px; background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+  color: var(--text); transition: transform .18s, box-shadow .18s, border-color .18s;
+}
+a.card:hover { text-decoration: none; transform: translateY(-3px); border-color: rgba(var(--primary-rgb), .4); box-shadow: var(--shadow-lg); }
+.card .e { font-size: 26px; }
+.card h4 { font-size: 16px; margin: 8px 0 4px; font-weight: 800; }
+.card p { font-size: 13.5px; color: var(--muted); line-height: 1.5; }
+
+/* Login card */
+.login-demo {
+  display: grid; grid-template-columns: auto 1fr; gap: 20px; align-items: center; padding: 22px 24px; border-radius: 20px; margin: 18px 0;
+  background: linear-gradient(135deg, rgba(var(--primary-rgb), .08), rgba(247,147,30,.08)); border: 1px solid rgba(var(--primary-rgb), .2);
+}
+.login-demo img { width: 72px; height: 72px; background: #fff; border-radius: 18px; padding: 6px; box-shadow: var(--shadow); }
+.creds { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.cred { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 8px 12px; font-size: 14px; }
+.cred small { display: block; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.cred code { font-family: ui-monospace, 'Cascadia Code', Consolas, monospace; font-weight: 700; font-size: 15px; }
+.copy { margin-left: 8px; font-size: 12px; border: 0; background: rgba(var(--primary-rgb), .12); color: var(--primary); padding: 3px 8px; border-radius: 7px; cursor: pointer; font-weight: 700; }
+
+/* Workflow */
+.flow { display: flex; align-items: stretch; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+.flow .node {
+  flex: 1 1 140px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px 14px; text-align: center; box-shadow: var(--shadow);
+  position: relative;
+}
+.flow .node .e { font-size: 26px; }
+.flow .node b { display: block; font-size: 14.5px; margin-top: 6px; }
+.flow .node span { font-size: 12.5px; color: var(--muted); }
+.flow .arrow { display: flex; align-items: center; color: var(--accent); font-size: 22px; font-weight: 800; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; margin: 16px 0 22px; border-radius: 14px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: 14.5px; }
+th, td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { background: var(--surface-2); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+td.c, th.c { text-align: center; }
+.yes { color: var(--success); font-weight: 800; }
+.no { color: var(--muted); }
+.status { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; }
+.s-paid { background: var(--success-soft); color: var(--success); }
+.s-partial { background: #fef3c7; color: #b45309; }
+.s-unpaid { background: var(--danger-soft); color: var(--danger); }
+
+/* FAQ */
+details { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; margin: 10px 0; box-shadow: var(--shadow); }
+summary { cursor: pointer; padding: 15px 18px; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: '+'; font-size: 20px; color: var(--primary); line-height: 1; }
+details[open] summary::after { content: '−'; }
+details > div { padding: 0 18px 16px; color: var(--text-2); }
+
+.footer { margin-top: 70px; padding: 30px; border-radius: 22px; background: var(--surface); border: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 14px; }
+.footer img { width: 48px; height: 48px; margin: 0 auto 10px; }
+
+.to-top {
+  position: fixed; right: 20px; bottom: 20px; width: 46px; height: 46px; border-radius: 14px; border: 0; cursor: pointer; z-index: 40;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; font-size: 20px; box-shadow: 0 10px 24px rgba(var(--primary-rgb), .35);
+  opacity: 0; pointer-events: none; transform: translateY(10px); transition: .25s;
+}
+.to-top.show { opacity: 1; pointer-events: auto; transform: none; }
+
+/* Lightbox */
+.lightbox {
+  position: fixed; inset: 0; z-index: 200; background: rgba(8, 14, 28, .88); display: none; align-items: center; justify-content: center; padding: 24px;
+  cursor: zoom-out;
+}
+.lightbox.open { display: flex; animation: fade .2s ease; }
+.lightbox img { max-width: min(1500px, 100%); max-height: 88vh; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,.5); background: #fff; }
+.lightbox .cap { position: absolute; bottom: 18px; left: 0; right: 0; text-align: center; color: #cbd5e1; font-size: 14px; padding: 0 16px; }
+.lightbox .close { position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 12px; border: 0; background: rgba(255,255,255,.14); color: #fff; font-size: 20px; cursor: pointer; }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+
+/* Responsive */
+@media (max-width: 1020px) {
+  .layout { grid-template-columns: 1fr; }
+  .menu-toggle { display: inline-flex; }
+  .sidebar {
+    position: fixed; top: var(--header-h); left: 0; bottom: 0; height: auto; width: min(320px, 86vw); z-index: 45;
+    background: var(--surface); transform: translateX(-100%); transition: transform .25s ease; box-shadow: var(--shadow-lg);
+  }
+  body.nav-open .sidebar { transform: none; }
+  .scrim { position: fixed; inset: var(--header-h) 0 0 0; background: rgba(8,14,28,.45); z-index: 44; display: none; }
+  body.nav-open .scrim { display: block; }
+  main { padding: 0 20px 60px; }
+  .hero { grid-template-columns: 1fr; padding: 40px 28px; }
+}
+@media (max-width: 640px) {
+  .top-cta { display: none; }
+  main { padding: 0 16px 60px; }
+  .hero { padding: 32px 20px; border-radius: 22px; margin-top: 16px; }
+  .hero p { font-size: 15.5px; }
+  .hero-art .badge-float { left: 8px; bottom: -14px; font-size: 13px; }
+  .flow .arrow { transform: rotate(90deg); width: 100%; justify-content: center; }
+  .flow .node { flex-basis: 100%; }
+  .login-demo { grid-template-columns: 1fr; text-align: center; }
+  .login-demo img { margin: 0 auto; }
+  .creds { justify-content: center; }
+  ol.steps > li { padding: 14px 14px 14px 56px; }
+  .brand small { display: none; }
+}
+@media print {
+  .topbar, .sidebar, .to-top, .progress, .hero-actions, .scrim { display: none !important; }
+  .layout { display: block; } main { padding: 0; }
+  .reveal { opacity: 1; transform: none; }
+  .hero { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  section.doc { break-inside: avoid-page; }
+  figure.shot, .paper { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header class="topbar">
+  <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Open contents" aria-expanded="false">☰</button>
+  <a class="brand" href="#top">
+    <img src="images/logo.webp" alt="Demo Travels logo" />
+    <span>Demo Travels<small>User Manual</small></span>
+  </a>
+  <div class="spacer"></div>
+  <a class="top-cta" href="#getting-started">🚀 Quick start</a>
+  <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌓</button>
+</header>
+<div class="scrim" id="scrim"></div>
+
+<div class="layout" id="top">
+  <aside class="sidebar" aria-label="Contents">
+    <div class="search"><input id="tocSearch" type="search" placeholder="Search the manual…" aria-label="Search the manual" /></div>
+    <nav class="toc" id="toc">
+      <div class="toc-group">Start here</div>
+      <a href="#overview"><span class="e">✨</span>Overview</a>
+      <a href="#getting-started"><span class="e">🚀</span>Getting started</a>
+      <a href="#workflow"><span class="e">🔁</span>Everyday workflow</a>
+      <a href="#dashboard"><span class="e">🏠</span>Dashboard</a>
+      <div class="toc-group">People</div>
+      <a href="#clients"><span class="e">👥</span>Clients</a>
+      <a href="#b2b-agents"><span class="e">🤝</span>B2B Agents</a>
+      <a href="#providers"><span class="e">🏢</span>Service Providers</a>
+      <div class="toc-group">Sales</div>
+      <a href="#bookings"><span class="e">🎫</span>Bookings</a>
+      <a href="#bills"><span class="e">🧾</span>Bills &amp; payments</a>
+      <a href="#invoice"><span class="e">📄</span>The invoice</a>
+      <a href="#refunds"><span class="e">↩️</span>Refunds</a>
+      <a href="#attestation"><span class="e">📜</span>Attestation</a>
+      <a href="#packages"><span class="e">🧳</span>Packages</a>
+      <div class="toc-group">Money &amp; insights</div>
+      <a href="#reports"><span class="e">📊</span>Reports</a>
+      <a href="#accounts"><span class="e">🏦</span>Accounts</a>
+      <a href="#expenses"><span class="e">💰</span>Expenses</a>
+      <div class="toc-group">Admin</div>
+      <a href="#activity"><span class="e">📝</span>Activity log</a>
+      <a href="#staff-activity"><span class="e">📈</span>Staff activity</a>
+      <a href="#users"><span class="e">🛡️</span>Manage users</a>
+      <a href="#profile"><span class="e">👤</span>Profile &amp; password</a>
+      <div class="toc-group">Help</div>
+      <a href="#mobile"><span class="e">📱</span>Using on mobile</a>
+      <a href="#faq"><span class="e">❓</span>FAQ &amp; troubleshooting</a>
+      <div class="no-results" id="noResults">No matching topics.</div>
+    </nav>
+  </aside>
+
+  <main>
+    <!-- HERO -->
+    <div class="hero">
+      <div>
+        <span class="kicker">📘 User Manual · v1.0</span>
+        <h1>Run your travel desk <span>without the paperwork.</span></h1>
+        <p>A friendly, step-by-step guide to the Demo Travels App: add clients, book tickets and visas, create invoices, collect payments and see your profit, all in one place.</p>
+        <div class="hero-actions">
+          <a class="btn btn-light" href="#getting-started">🚀 Start in 2 minutes</a>
+          <a class="btn btn-ghost" href="#workflow">🔁 See the daily workflow</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="images/dashboard.webp" alt="Demo Travels dashboard" data-zoom data-caption="The Demo Travels dashboard" />
+        <div class="badge-float"><img src="images/logo.webp" alt="" />Demo Travels App</div>
+      </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <section class="doc reveal" id="overview">
+      <div class="sec-head"><div class="sec-icon">✨</div><div><div class="sec-num">Overview</div><h2>What can the app do?</h2></div></div>
+      <p class="lead">Demo Travels App is a complete back office for a travel agency. It keeps every client, booking, bill and payment connected, so balances and reports are always up to date. You never have to add anything up by hand.</p>
+      <div class="grid">
+        <a class="card" href="#clients"><div class="e">👥</div><h4>Clients &amp; agents</h4><p>Keep contact details, see what each person owes and record their payments.</p></a>
+        <a class="card" href="#bookings"><div class="e">🎫</div><h4>Bookings</h4><p>Flights, trains, buses, hotels, visas, packages and medical appointments.</p></a>
+        <a class="card" href="#bills"><div class="e">🧾</div><h4>Bills &amp; invoices</h4><p>Turn a booking into a bill in one tap. Print it, save a PDF or send it on WhatsApp.</p></a>
+        <a class="card" href="#packages"><div class="e">🧳</div><h4>Group packages</h4><p>Plan tours with passengers, transport, hotels, invoices and supplier settlements.</p></a>
+        <a class="card" href="#reports"><div class="e">📊</div><h4>Reports</h4><p>Receivables, margins, profit and client or provider statements.</p></a>
+        <a class="card" href="#accounts"><div class="e">🏦</div><h4>Cash &amp; bank</h4><p>Track money in cash and bank accounts, including transfers and office expenses.</p></a>
+      </div>
+    </section>
+
+    <!-- GETTING STARTED -->
+    <section class="doc reveal" id="getting-started">
+      <div class="sec-head"><div class="sec-icon">🚀</div><div><div class="sec-num">Section 1</div><h2>Getting started</h2></div></div>
+      <p class="lead">The app runs in any modern web browser on a computer, tablet or phone. There's nothing to install.</p>
+
+      <div class="login-demo">
+        <img src="images/logo.webp" alt="" />
+        <div>
+          <b style="font-size:17px">Try the demo</b>
+          <div style="color:var(--text-2);font-size:14.5px">Log in with the demo administrator account:</div>
+          <div class="creds">
+            <div class="cred"><small>Mobile number</small><code>9876543210</code><button class="copy" data-copy="9876543210">Copy</button></div>
+            <div class="cred"><small>Password</small><code>Admin@123</code><button class="copy" data-copy="Admin@123">Copy</button></div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Log in</h3>
+      <ol class="steps">
+        <li>Open the app in your browser.</li>
+        <li>Type your <b>Mobile Number</b>. You can enter it with or without <span class="ui">+91</span>, spaces or a leading 0.</li>
+        <li>Type your <b>Password</b>. Tap the 👁 icon if you want to check what you typed.</li>
+        <li>Press <span class="ui">Log In</span>. You'll land on the <a href="#dashboard">Dashboard</a>.</li>
+      </ol>
+      <figure class="shot"><div class="frame" data-zoom-frame><div class="bar"><i></i><i></i><i></i><span>Login</span></div><img src="images/login.webp" alt="Login screen" loading="lazy" data-zoom data-caption="The login screen" /></div><figcaption>The login screen. On a phone only the login card is shown.</figcaption></figure>
+
+      <h3>Finding your way around</h3>
+      <ul class="ticks">
+        <li><b>Left menu</b> (on a computer): every section of the app, one click away. The highlighted item is where you are.</li>
+        <li><b>☰ Menu button</b> (on a phone): opens the same menu from the left.</li>
+        <li><b>Top bar</b>: shows the page name, today's date and who is logged in.</li>
+        <li><b>Search bars and filter chips</b>: on almost every list, to find records quickly.</li>
+      </ul>
+
+      <h3>Who can see what?</h3>
+      <p>There are two kinds of user. <b>Admins</b> see everything. <b>Staff</b> handle daily work, but money-sensitive areas are hidden from them.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Area</th><th class="c">Staff</th><th class="c">Admin</th></tr></thead>
+        <tbody>
+          <tr><td>Dashboard, Clients, B2B Agents, Bookings, Attestation, Packages, Providers, Bills, Reports, Profile</td><td class="c yes">✓</td><td class="c yes">✓</td></tr>
+          <tr><td>Cost price, profit and margin figures</td><td class="c no">—</td><td class="c yes">✓</td></tr>
+          <tr><td>Accounts, Expenses, Activity log, Staff Activity, Manage Users</td><td class="c no">—</td><td class="c yes">✓</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- WORKFLOW -->
+    <section class="doc reveal" id="workflow">
+      <div class="sec-head"><div class="sec-icon">🔁</div><div><div class="sec-num">Section 2</div><h2>The everyday workflow</h2></div></div>
+      <p class="lead">Most days you'll follow the same five steps. Learn these and you know 80% of the app.</p>
+      <div class="flow">
+        <div class="node"><div class="e">👥</div><b>1 · Add client</b><span>Once per customer</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="e">🎫</div><b>2 · New booking</b><span>Ticket, visa, hotel…</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="e">🧾</div><b>3 · Generate bill</b><span>One tap from the booking</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="e">💵</div><b>4 · Record payment</b><span>Full or part payment</span></div>
+        <div class="arrow">→</div>
+        <div class="node"><div class="e">📊</div><b>5 · Check reports</b><span>Dues &amp; profit update live</span></div>
+      </div>
+      <div class="callout tip"><div class="ci">💡</div><div><b>Everything is linked</b>A payment you record on a bill instantly updates the client's balance, the dashboard totals and the reports.</div></div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section class="doc reveal" id="dashboard">
+      <div class="sec-head"><div class="sec-icon">🏠</div><div><div class="sec-num">Section 3</div><h2>Dashboard</h2></div></div>
+      <div class="who"><span class="pill all">All users</span></div>
+      <p class="lead">Your business at a glance, every time you log in.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Dashboard</span></div><img src="images/dashboard.webp" alt="Dashboard" loading="lazy" data-zoom data-caption="Dashboard" /></div><figcaption>The dashboard with its summary cards and charts.</figcaption></figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Card</th><th>What it tells you</th></tr></thead>
+        <tbody>
+          <tr><td><b>Total Receivable</b></td><td>Money clients still owe you, with a bar showing collected vs outstanding.</td></tr>
+          <tr><td><b>Collected This Month</b></td><td>Payments received this month, compared with all-time collections.</td></tr>
+          <tr><td><b>Total Bookings</b></td><td>How many bookings you've made.</td></tr>
+          <tr><td><b>Bills Pending</b></td><td>Bills that aren't fully paid yet.</td></tr>
+          <tr><td><b>Total Profit</b> · <b>Profit by Type</b> <span class="pill admin">Admin</span></td><td>Your margin, split by flights, visas, hotels and so on.</td></tr>
+          <tr><td><b>Expenses This Month</b> · <b>By Category</b> <span class="pill admin">Admin</span></td><td>Office spending such as rent, salary and bills.</td></tr>
+        </tbody>
+      </table></div>
+      <p>Below the cards you'll find <b>quick actions</b> (<span class="ui">New Booking</span>, <span class="ui">Record Payment</span>, <span class="ui">Generate Bill</span>) and a <b>Recent Activity</b> feed. A yellow banner appears if any bill has been unpaid for more than 15 days.</p>
+    </section>
+
+    <!-- CLIENTS -->
+    <section class="doc reveal" id="clients">
+      <div class="sec-head"><div class="sec-icon">👥</div><div><div class="sec-num">Section 4</div><h2>Clients</h2></div></div>
+      <div class="who"><span class="pill all">All users</span></div>
+      <p class="lead">Your customer list. Each client shows how much they've been billed and whether they're settled or still owe money.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Clients</span></div><img src="images/clients.webp" alt="Clients list" loading="lazy" data-zoom data-caption="Clients list" /></div><figcaption>Use the chips to filter by <b>Unpaid</b>, <b>Partially Paid</b> or <b>Settled</b>.</figcaption></figure>
+      <h3>Add a client</h3>
+      <ol class="steps">
+        <li>Open <b>Clients</b> and tap <span class="ui">➕ Add New Client</span>.</li>
+        <li>Fill in the <b>Client Name</b> and <b>Phone</b> (pick the country code from the list). Email, address and notes are optional.</li>
+        <li>If the client already owed you money before you started using the app, enter it as the <b>Opening Balance</b>.</li>
+        <li>Press <span class="ui">Save</span>.</li>
+      </ol>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Add New Client</span></div><img src="images/add-client.webp" alt="Add client form" loading="lazy" data-zoom data-caption="Add New Client form" /></div></figure>
+      <h3>See a client's details and take a payment</h3>
+      <ol class="steps">
+        <li>Tap a client to open their card. It shows Total Billed, Total Paid, the Balance Due and all their bookings.</li>
+        <li>Press <span class="ui">Record Payment</span> to take money against their bills. The amount is applied to their <b>oldest bills first</b>, and you can see a live preview before saving.</li>
+        <li>Use <span class="ui">Payment History</span> to see, edit or delete earlier receipts, or <span class="ui">Edit</span> to change their details.</li>
+      </ol>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Client details</span></div><img src="images/client-detail.webp" alt="Client detail" loading="lazy" data-zoom data-caption="Client details" /></div></figure>
+      <div class="callout note"><div class="ci">🔒</div><div><b>Safe delete</b>A client with bookings can't be deleted, so no history is lost by accident.</div></div>
+    </section>
+
+    <!-- B2B -->
+    <section class="doc reveal" id="b2b-agents">
+      <div class="sec-head"><div class="sec-icon">🤝</div><div><div class="sec-num">Section 5</div><h2>B2B Agents</h2></div></div>
+      <div class="who"><span class="pill all">All users</span></div>
+      <p class="lead">Other travel agents you work with. An agent can be your <b>customer</b> (you sell to them) and your <b>supplier</b> (you buy from them), and the app tracks both sides.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>B2B Agents</span></div><img src="images/b2b-agents.webp" alt="B2B agents" loading="lazy" data-zoom data-caption="B2B Agents" /></div></figure>
+      <ul class="ticks">
+        <li>Add an agent with <span class="ui">➕ Add New B2B Agent</span>. The details are the same as for a client.</li>
+        <li>When a booking is made <b>for</b> an agent, its bill goes to the agent instead of the traveller.</li>
+        <li>Open an agent to see <b>Purchased from Agent</b>, <b>Paid to Agent</b> and the <b>Balance We Owe</b>. Record supplier payments from there.</li>
+      </ul>
+    </section>
+
+    <!-- PROVIDERS -->
+    <section class="doc reveal" id="providers">
+      <div class="sec-head"><div class="sec-icon">🏢</div><div><div class="sec-num">Section 6</div><h2>Service Providers</h2></div></div>
+      <div class="who"><span class="pill all">All users</span></div>
+      <p class="lead">The airlines, hotels, visa suppliers, train agents and consolidators you buy from. The app shows what you owe each one.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Providers</span></div><img src="images/providers.webp" alt="Providers" loading="lazy" data-zoom data-caption="Service Providers" /></div><figcaption>Each provider shows its <b>Remaining Balance</b>, which is what you still have to pay them.</figcaption></figure>
+      <ol class="steps">
+        <li>Tap <span class="ui">➕ Add Service Provider</span>, enter the name and tick every <b>Type</b> they supply (for example, Airline + Consolidator).</li>
+        <li>Add a contact person, phone, email, GSTIN and an opening balance if you already owe them money.</li>
+        <li>When you pay a provider, press <span class="ui">Record Payment</span> and choose the Cash or Bank account it came from.</li>
+        <li>Press <span class="ui">History</span> to see every purchase and payment for that provider.</li>
+      </ol>
+    </section>
+
+    <!-- BOOKINGS -->
+    <section class="doc reveal" id="bookings">
+      <div class="sec-head"><div class="sec-icon">🎫</div><div><div class="sec-num">Section 7</div><h2>Bookings</h2></div></div>
+      <div class="who"><span class="pill all">All users</span></div>
+      <p class="lead">Every ticket, visa, hotel stay or appointment you sell starts as a booking.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Bookings</span></div><img src="images/bookings.webp" alt="Bookings list" loading="lazy" data-zoom data-caption="Bookings list" /></div><figcaption>Filter by type (Flight, Bus, Train, Hotel, Package, Visa, Medical) or by date. The search box finds any name, PNR, route or note.</figcaption></figure>
+      <h3>Create a booking</h3>
+      <ol class="steps">
+        <li>Open <b>Bookings</b> and tap <span class="ui">➕ New Booking</span>.</li>
+        <li><b>Booking For</b>: choose <span class="ui">Client</span> or <span class="ui">B2B Agent</span>, then pick who it's for.</li>
+        <li><b>Buy from</b>: choose the <span class="ui">Provider</span> (or a B2B agent) you're buying from.</li>
+        <li>Pick the <b>Type</b>, then fill in the PNR / booking reference, passenger name(s), route or country, and the travel date.</li>
+        <li>Enter the <b>Cost Price</b> (what you pay) and the <b>Selling Price</b> (what the client pays). The margin is worked out for you.</li>
+        <li>Press <span class="ui">Save</span>.</li>
+      </ol>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>New Booking</span></div><img src="images/new-booking.webp" alt="New booking form" loading="lazy" data-zoom data-caption="New Booking form" /></div></figure>
+      <h3>Turn it into a bill</h3>
+      <p>Each unbilled booking has a blue <span class="ui">Generate Bill</span> button. Tap it and a numbered bill (for example <b>DT-0007</b>) is created straight away. The booking then shows a green <b>Billed</b> badge.</p>
+      <div class="callout tip"><div class="ci">💡</div><div><b>One booking, one bill</b>The app never creates two bills for the same booking, even if you double-tap.</div></div>
+    </section>
+
+    <!-- BILLS -->
+    <section class="doc reveal" id="bills">
+      <div class="sec-head"><div class="sec-icon">🧾</div><div><div class="sec-num">Section 8</div><h2>Bills &amp; payments</h2></div></div>
+      <div class="who"><span class="pill all">All users</span></div>
+      <p class="lead">All your bills in one list, each with a clear payment status.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><span class="status s-unpaid">Unpaid</span></td><td>Nothing has been paid yet.</td></tr>
+          <tr><td><span class="status s-partial">Partially Paid</span></td><td>Some money has been received and a balance is still due.</td></tr>
+          <tr><td><span class="status s-paid">Paid</span></td><td>Fully settled.</td></tr>
+        </tbody>
+      </table></div>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Bills</span></div><img src="images/bills.webp" alt="Bills list" loading="lazy" data-zoom data-caption="Bills list" /></div></figure>
+      <h3>Record a payment</h3>
+      <ol class="steps">
+        <li>Tap a bill to open it.</li>
+        <li>Press <span class="ui">Record Payment</span>.</li>
+        <li>Enter the amount, the date, and the Cash or Bank account the money went into. You can't enter more than the amount due.</li>
+        <li>Press <span class="ui">Save</span>. The status and all the totals update right away.</li>
+      </ol>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Bill details</span></div><img src="images/bill-detail.webp" alt="Bill detail" loading="lazy" data-zoom data-caption="Bill details" /></div><figcaption>Inside a bill: its details, the payments received, and buttons to print, send or take a payment.</figcaption></figure>
+      <h3>Share the invoice</h3>
+      <ul class="ticks">
+        <li><span class="ui">Download / Print PDF</span> opens your browser's print window. Choose <b>Save as PDF</b> to keep a copy.</li>
+        <li><span class="ui">💬 Send via WhatsApp</span> creates the invoice PDF. On a phone it opens the share sheet. On a computer it downloads the file so you can attach it in WhatsApp.</li>
+      </ul>
+    </section>
+
+    <!-- INVOICE -->
+    <section class="doc reveal" id="invoice">
+      <div class="sec-head"><div class="sec-icon">📄</div><div><div class="sec-num">Section 9</div><h2>The invoice</h2></div></div>
+      <p class="lead">Every bill prints as a clean, branded invoice that's ready to send to your client.</p>
+      <div class="paper"><img src="images/invoice.webp" alt="Sample invoice" loading="lazy" data-zoom data-caption="A printed invoice" /></div>
+      <ul class="ticks">
+        <li><b>Letterhead</b>: your logo, address, phone and email.</li>
+        <li><b>Bill To</b>: the client's name and contact details, plus the invoice number and date.</li>
+        <li><b>Details</b>: passengers, route, travel date and PNR.</li>
+        <li><b>Totals</b>: bill amount, amount paid and the balance due (in red while money is still owed).</li>
+        <li><b>Bank details</b>: taken from the bank account you mark as <em>Default on invoices</em> in <a href="#accounts">Accounts</a>.</li>
+        <li><b>Seal and signature</b>: added automatically.</li>
+      </ul>
+    </section>
+
+    <!-- REFUNDS -->
+    <section class="doc reveal" id="refunds">
+      <div class="sec-head"><div class="sec-icon">↩️</div><div><div class="sec-num">Section 10</div><h2>Cancellations &amp; refunds</h2></div></div>
+      <div class="who"><span class="pill all">All users</span></div>
+      <p class="lead">When a client cancels a booking that's already been billed, record a refund so the numbers stay right.</p>
+      <ol class="steps">
+        <li>In <b>Bookings</b>, find the billed booking and press the red <span class="ui">Refund</span> button.</li>
+        <li>Enter the <b>Refund Amount</b> going back to the client. The rest is kept as your <b>Penalty</b>, and the app shows it as you type.</li>
+        <li>If the client had already paid more than the penalty, choose the account the refund is paid from.</li>
+        <li>Save. The booking is marked <b>Refunded</b>, and the bill, the client's balance and your profit all adjust automatically.</li>
+      </ol>
+      <div class="callout warn"><div class="ci">⚠️</div><div><b>Refunds are final</b>A refund is a one-time action for a booking, so check the amount before saving.</div></div>
+    </section>
+
+    <!-- ATTESTATION -->
+    <section class="doc reveal" id="attestation">
+      <div class="sec-head"><div class="sec-icon">📜</div><div><div class="sec-num">Section 11</div><h2>Attestation</h2></div></div>
+      <div class="who"><span class="pill all">All users</span></div>
+      <p class="lead">Track document attestation jobs (education, marriage, birth, employment, commercial and more) from start to finish.</p>
+      <ol class="steps">
+        <li>Tap <span class="ui">➕ Add Attestation</span> and choose the <b>Client</b>, <b>Country</b> and <b>Category</b>. If your category isn't listed, add a custom one.</li>
+        <li>Choose the supplier and enter the cost and selling prices.</li>
+        <li>Update the <b>Status</b> as the job moves along: <span class="ui">Processing</span> → <span class="ui">In Transfer</span> → <span class="ui">Approved</span> → <span class="ui">In Transfer Back</span> → <span class="ui">Completed</span>. You can also mark it <span class="ui">Rejected</span> or <span class="ui">Cancelled</span>.</li>
+      </ol>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Attestation</span></div><img src="images/attestations.webp" alt="Attestation" loading="lazy" data-zoom data-caption="Attestation" /></div><figcaption>Use the status chips to see which jobs are at each stage.</figcaption></figure>
+    </section>
+
+    <!-- PACKAGES -->
+    <section class="doc reveal" id="packages">
+      <div class="sec-head"><div class="sec-icon">🧳</div><div><div class="sec-num">Section 12</div><h2>Packages (group tours)</h2></div></div>
+      <div class="who"><span class="pill all">All users</span></div>
+      <p class="lead">Plan a complete group trip, such as Umrah, Hajj, Lakshadweep or a domestic or international tour, and track every rupee in and out.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Packages</span></div><img src="images/packages.webp" alt="Packages" loading="lazy" data-zoom data-caption="Packages" /></div></figure>
+      <h3>Create a package</h3>
+      <ol class="steps">
+        <li>Tap <span class="ui">➕ Create Event</span>. Enter a title, the trip type, from and to dates, the maximum number of people and the travel modes.</li>
+        <li>Set the <b>Status</b>: Planning, Confirmed, Completed or Cancelled.</li>
+        <li>Open the package to manage it using the tabs.</li>
+      </ol>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Package details</span></div><img src="images/package-detail.webp" alt="Package detail" loading="lazy" data-zoom data-caption="Package details, Overview tab" /></div><figcaption>The <b>Overview</b> tab shows the package value, money collected and outstanding, total cost and projected profit.</figcaption></figure>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Tab</th><th>What you do there</th></tr></thead>
+        <tbody>
+          <tr><td><b>Passengers</b></td><td>Add travellers one by one or as a group, with passport number, room sharing and package price. Record each passenger's payments.</td></tr>
+          <tr><td><b>Transport</b> · <b>Hotels</b></td><td>Add flights, buses and so on (with PNR and times) and hotel stays, each with its supplier and cost.</td></tr>
+          <tr><td><b>Purchases</b> · <b>Expenses</b></td><td>Record extras such as visas, food, guides, local transport and tips.</td></tr>
+          <tr><td><b>Settlement</b></td><td>See what you owe each supplier and record payments to them.</td></tr>
+          <tr><td><b>Create Invoice</b></td><td>Pick passengers (for example, one family) and produce a single invoice for them. Earlier invoices can be reprinted from Invoice History.</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <!-- REPORTS -->
+    <section class="doc reveal" id="reports">
+      <div class="sec-head"><div class="sec-icon">📊</div><div><div class="sec-num">Section 13</div><h2>Reports</h2></div></div>
+      <div class="who"><span class="pill all">All users</span><span class="pill admin">Profit &amp; margin: Admin</span></div>
+      <p class="lead">Numbers you can trust, always calculated from your real bookings and payments.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Reports</span></div><img src="images/reports.webp" alt="Reports" loading="lazy" data-zoom data-caption="Reports" /></div></figure>
+      <div class="grid">
+        <div class="card"><div class="e">💼</div><h4>Receivables Snapshot</h4><p>Total billed, total collected and total outstanding, all-time.</p></div>
+        <div class="card"><div class="e">📈</div><h4>Bookings by Type</h4><p>How many flights, visas, hotels and so on in the date range you choose.</p></div>
+        <div class="card"><div class="e">💹</div><h4>Margin &amp; Profit</h4><p>Cost vs selling price and profit, for all providers or just one (admin only).</p></div>
+        <div class="card"><div class="e">📑</div><h4>Client Statement</h4><p>Pick a client and a period, then download a full statement of bills and payments.</p></div>
+        <div class="card"><div class="e">🏢</div><h4>Provider Statement</h4><p>Everything bought from and paid to a provider, with the balance owed.</p></div>
+      </div>
+      <div class="callout tip"><div class="ci">📅</div><div><b>Choosing dates</b>Tap the date bar to open the calendar. Use the quick presets (like <em>This month</em>) or pick a start and an end date.</div></div>
+    </section>
+
+    <!-- ACCOUNTS -->
+    <section class="doc reveal" id="accounts">
+      <div class="sec-head"><div class="sec-icon">🏦</div><div><div class="sec-num">Section 14</div><h2>Accounts (Cash &amp; Bank)</h2></div></div>
+      <div class="who"><span class="pill admin">Admin only</span></div>
+      <p class="lead">Every payment you receive or make goes into a Cash or Bank account, so you always know how much money is where.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Accounts</span></div><img src="images/accounts.webp" alt="Accounts" loading="lazy" data-zoom data-caption="Accounts" /></div></figure>
+      <ul class="ticks">
+        <li>A <b>Cash</b> account is created for you automatically. Add bank accounts under the <span class="ui">Bank</span> tab.</li>
+        <li>Mark one bank as <b>Default on invoices</b>. Its details are printed on every invoice.</li>
+        <li><span class="ui">⇄ Transfer Funds</span> moves money <b>Cash → Bank</b> or <b>Bank → Cash</b>, for example when you deposit the day's cash.</li>
+        <li>Open an account to see its full <b>Transaction History</b> and running balance for any period.</li>
+      </ul>
+    </section>
+
+    <!-- EXPENSES -->
+    <section class="doc reveal" id="expenses">
+      <div class="sec-head"><div class="sec-icon">💰</div><div><div class="sec-num">Section 15</div><h2>Expenses</h2></div></div>
+      <div class="who"><span class="pill admin">Admin only</span></div>
+      <p class="lead">Record office running costs so your profit picture is complete.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Expenses</span></div><img src="images/expenses.webp" alt="Expenses" loading="lazy" data-zoom data-caption="Expenses" /></div></figure>
+      <ol class="steps">
+        <li>Tap <span class="ui">➕ Add Expense</span>.</li>
+        <li>Choose a <b>Category</b> (Staff Salary, Electricity Bill, Internet Bill, Maintenance, Rent or Other), enter the amount and date, and pick the account it was paid from.</li>
+        <li>Save. The <b>Office Expenses Report</b> at the bottom totals everything for the period, and you can print it.</li>
+      </ol>
+    </section>
+
+    <!-- ACTIVITY -->
+    <section class="doc reveal" id="activity">
+      <div class="sec-head"><div class="sec-icon">📝</div><div><div class="sec-num">Section 16</div><h2>Activity log</h2></div></div>
+      <div class="who"><span class="pill admin">Admin only</span></div>
+      <p class="lead">A complete, automatic record of who created, edited or deleted what, and when.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Activity Log</span></div><img src="images/activity.webp" alt="Activity log" loading="lazy" data-zoom data-caption="Activity log" /></div><figcaption>Filter by <b>user</b>, <b>type</b> (booking, payment, client…) and date. Edits show each change as <em>old → new</em>.</figcaption></figure>
+    </section>
+
+    <!-- STAFF ACTIVITY -->
+    <section class="doc reveal" id="staff-activity">
+      <div class="sec-head"><div class="sec-icon">📈</div><div><div class="sec-num">Section 17</div><h2>Staff activity</h2></div></div>
+      <div class="who"><span class="pill admin">Admin only</span></div>
+      <p class="lead">See how many bookings and packages each staff member handled in a period, and the profit they generated.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Staff Activity</span></div><img src="images/staff-activity.webp" alt="Staff activity" loading="lazy" data-zoom data-caption="Staff activity" /></div><figcaption>Choose a period and press <span class="ui">Download / Print PDF</span> for a printable summary.</figcaption></figure>
+    </section>
+
+    <!-- USERS -->
+    <section class="doc reveal" id="users">
+      <div class="sec-head"><div class="sec-icon">🛡️</div><div><div class="sec-num">Section 18</div><h2>Manage users</h2></div></div>
+      <div class="who"><span class="pill admin">Admin only</span></div>
+      <p class="lead">Give your team their own logins, and switch them off when they leave.</p>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Manage Users</span></div><img src="images/users.webp" alt="Manage users" loading="lazy" data-zoom data-caption="Manage users" /></div></figure>
+      <ol class="steps">
+        <li>Tap <span class="ui">➕ Add Staff</span> and enter their name, mobile number and a starting password.</li>
+        <li>Share the login with them. They can change the password later from their Profile.</li>
+        <li>To stop someone logging in, edit them and set the <b>Status</b> to <span class="ui">Disabled</span>.</li>
+        <li>If someone forgets their password, press <span class="ui">Reset Password</span> and set a new one.</li>
+      </ol>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="doc reveal" id="profile">
+      <div class="sec-head"><div class="sec-icon">👤</div><div><div class="sec-num">Section 19</div><h2>Profile &amp; password</h2></div></div>
+      <div class="who"><span class="pill all">All users</span></div>
+      <figure class="shot"><div class="frame"><div class="bar"><i></i><i></i><i></i><span>Profile</span></div><img src="images/profile.webp" alt="Profile" loading="lazy" data-zoom data-caption="Profile" /></div></figure>
+      <ul class="ticks">
+        <li>See the business details and who you're logged in as.</li>
+        <li><span class="ui">🔑 Change Password</span>: enter your current password, then the new one twice.</li>
+        <li><span class="ui">🚪 Log Out</span>: always log out on shared computers.</li>
+      </ul>
+    </section>
+
+    <!-- MOBILE -->
+    <section class="doc reveal" id="mobile">
+      <div class="sec-head"><div class="sec-icon">📱</div><div><div class="sec-num">Section 20</div><h2>Using the app on your phone</h2></div></div>
+      <p class="lead">Everything works on a phone. The layout adjusts to the smaller screen.</p>
+      <div class="phones">
+        <div class="phone"><img src="images/mobile-dashboard.webp" alt="Mobile dashboard" loading="lazy" data-zoom data-caption="Dashboard on a phone" /></div>
+        <div class="phone"><img src="images/mobile-menu.webp" alt="Mobile menu" loading="lazy" data-zoom data-caption="The ☰ menu on a phone" /></div>
+      </div>
+      <div class="callout tip"><div class="ci">📲</div><div><b>Add it to your home screen</b>In Chrome, tap ⋮ → <em>Add to Home screen</em>. On iPhone Safari, tap Share → <em>Add to Home Screen</em>. The app then opens like a normal app.</div></div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="doc reveal" id="faq">
+      <div class="sec-head"><div class="sec-icon">❓</div><div><div class="sec-num">Section 21</div><h2>FAQ &amp; troubleshooting</h2></div></div>
+      <details><summary>I can't log in, and it says "Incorrect phone number or password".</summary><div>Check the mobile number (with or without +91 is fine) and the password. Passwords are case-sensitive. If you still can't get in, ask an admin to reset your password from <a href="#users">Manage Users</a>. Your account may also have been disabled.</div></details>
+      <details><summary>Why don't I see Accounts, Expenses or profit figures?</summary><div>Those are only for admins. See <a href="#getting-started">Who can see what</a>.</div></details>
+      <details><summary>I made a mistake in a booking. Can I change it?</summary><div>Yes. Tap the booking to edit it. Once a booking has been refunded it's locked, but you can still open it to view the details.</div></details>
+      <details><summary>How do I record a part payment?</summary><div>Open the bill, press <b>Record Payment</b> and enter the amount received. The bill moves to <em>Partially Paid</em> and shows the balance due. Record the rest later in the same way.</div></details>
+      <details><summary>A client paid for several bills at once. What do I do?</summary><div>Open the client in <a href="#clients">Clients</a> and press <b>Record Payment</b>. One amount is spread across their bills, oldest first, and you'll see a preview before you save.</div></details>
+      <details><summary>How do I save an invoice as a PDF?</summary><div>Open the bill, press <b>Download / Print PDF</b>, and in the print window choose <em>Save as PDF</em> as the printer.</div></details>
+      <details><summary>Can I delete a bill?</summary><div>Yes. Open the bill and use the delete (🗑) button. This removes the bill <b>and all its payments</b> and can't be undone, so use it only for mistakes.</div></details>
+      <details><summary>A page is stuck on "Loading…".</summary><div>Check your internet connection, then refresh the page. If a page shows an error, press <b>Retry</b>.</div></details>
+    </section>
+
+    <div class="footer">
+      <img src="images/logo.webp" alt="" />
+      <b style="color:var(--text)">Demo Travels App: User Manual</b><br />
+      Every booking, bill &amp; balance, in one place. · <a href="#top">Back to top ↑</a>
+    </div>
+  </main>
+</div>
+
+<button class="to-top" id="toTop" aria-label="Back to top">↑</button>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+  <button class="close" aria-label="Close preview">✕</button>
+  <img alt="" />
+  <div class="cap"></div>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  // Theme toggle (remembers the choice per browser; works without storage too).
+  try { var saved = localStorage.getItem('dt-manual-theme'); if (saved) root.setAttribute('data-theme', saved); } catch (e) {}
+  document.getElementById('themeToggle').addEventListener('click', function () {
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = dark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('dt-manual-theme', next); } catch (e) {}
+  });
+
+  // Mobile contents drawer.
+  var toggle = document.getElementById('menuToggle');
+  function setNav(open) { document.body.classList.toggle('nav-open', open); toggle.setAttribute('aria-expanded', open); }
+  toggle.addEventListener('click', function () { setNav(!document.body.classList.contains('nav-open')); });
+  document.getElementById('scrim').addEventListener('click', function () { setNav(false); });
+  document.querySelectorAll('.toc a').forEach(function (a) { a.addEventListener('click', function () { setNav(false); }); });
+
+  // Search filter over the table of contents (matches titles and section text).
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var search = document.getElementById('tocSearch');
+  var noResults = document.getElementById('noResults');
+  search.addEventListener('input', function () {
+    var q = search.value.trim().toLowerCase(), shown = 0;
+    links.forEach(function (a) {
+      var sec = document.querySelector(a.getAttribute('href'));
+      var hay = (a.textContent + ' ' + (sec ? sec.textContent : '')).toLowerCase();
+      var hit = !q || hay.indexOf(q) !== -1;
+      a.classList.toggle('hidden', !hit);
+      if (hit) shown++;
+    });
+    document.querySelectorAll('.toc-group').forEach(function (g) { g.style.display = q ? 'none' : ''; });
+    noResults.style.display = shown ? 'none' : 'block';
+  });
+  search.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { var first = links.find(function (a) { return !a.classList.contains('hidden'); }); if (first) first.click(); }
+  });
+
+  // Scrollspy, progress bar, back-to-top.
+  var sections = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  var progress = document.getElementById('progress'), toTop = document.getElementById('toTop');
+  function onScroll() {
+    var y = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+    toTop.classList.toggle('show', y > 700);
+    var current = 0;
+    sections.forEach(function (s, i) { if (s && s.getBoundingClientRect().top < 140) current = i; });
+    links.forEach(function (a, i) { a.classList.toggle('active', i === current); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+  toTop.addEventListener('click', function () { window.scrollTo({ top: 0 }); });
+
+  // Reveal-on-scroll.
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  }
+
+  // Lightbox for screenshots.
+  var lb = document.getElementById('lightbox'), lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.cap');
+  document.querySelectorAll('img[data-zoom]').forEach(function (img) {
+    var target = img.closest('.frame, .phone, .paper') || img;
+    target.setAttribute('tabindex', '0');
+    function open() { lbImg.src = img.src; lbImg.alt = img.alt; lbCap.textContent = img.dataset.caption || img.alt; lb.classList.add('open'); }
+    target.addEventListener('click', open);
+    target.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  });
+  lb.addEventListener('click', function () { lb.classList.remove('open'); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { lb.classList.remove('open'); setNav(false); } });
+
+  // Copy buttons for the demo login.
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.dataset.copy;
+      var done = function () { btn.textContent = 'Copied!'; setTimeout(function () { btn.textContent = 'Copy'; }, 1400); };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, done); else done();
+    });
+  });
+})();
+</script>
+</body>
+</html>
